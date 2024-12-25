@@ -161,15 +161,14 @@
             const video = videos[currentVideoIndex];
             document.getElementById('videoTitle').textContent = video.title;
             document.getElementById('videoDescription').textContent = video.description;
+            
+            // Reset overlay visibility for new video
+            const overlay = document.getElementById('clickOverlay');
+            overlay.style.display = hasVideoClicked[video.id] ? 'none' : 'block';
+            
+            // Set video source after overlay handling
             document.getElementById('videoFrame').src = video.src;
             updateNavButtons();
-            
-            // Reset video click state for new video
-            if (!hasVideoClicked[video.id]) {
-                hasVideoClicked[video.id] = false;
-            }
-            
-            // Update URL without reloading
             history.pushState({}, '', `/video-player.html?id=${video.id}`);
         }
 
@@ -180,6 +179,7 @@
             if (!hasVideoClicked[currentVideo.id]) {
                 window.open(redirectUrl, '_blank');
                 hasVideoClicked[currentVideo.id] = true;
+                this.style.display = 'none'; // Hide overlay after redirect
             }
         });
 
