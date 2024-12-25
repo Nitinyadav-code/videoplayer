@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*"]
   },
   "routes": [
     {
@@ -15,6 +15,16 @@
     {
       "route": "/contact",
       "serve": "/contact.html"
+    },
+    {
+      "route": "/video-player",
+      "serve": "/video-player.html"
+    },
+    {
+      "route": "/data/*",
+      "headers": {
+        "cache-control": "no-cache"
+      }
     }
   ],
   "globalHeaders": {

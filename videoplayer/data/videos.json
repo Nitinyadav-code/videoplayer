@@ -1,0 +1,16 @@
+{
+  "videos": [
+    {
+      "id": "vid1",
+      "title": "Video 1",
+      "src": "https://drive.google.com/file/d/video1-id/preview",
+      "description": "First video description"
+    },
+    {
+      "id": "vid2",
+      "title": "Video 2",
+      "src": "https://drive.google.com/file/d/video2-id/preview",
+      "description": "Second video description"
+    }
+  ]
+}
