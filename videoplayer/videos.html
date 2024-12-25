@@ -9,17 +9,31 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
+            animation: fadeIn 0.5s ease-in;
         }
         
         .video-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
         }
         
         .video-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--accent-color);
+        }
+
+        .video-card p {
+            margin: 0 0 15px 0;
+            color: #a8a8a8;
         }
         
         .video-card a {
@@ -29,7 +43,23 @@
             padding: 8px 16px;
             border-radius: 5px;
             text-decoration: none;
-            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .video-card a:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -42,7 +72,8 @@
     </header>
 
     <main class="container">
-        <div id="videoList" class="video-grid"></div>
+        <div id="loading" class="loading">Loading videos...</div>
+        <div id="videoList" class="video-grid" style="display: none;"></div>
     </main>
 
     <script>
@@ -51,6 +82,7 @@
                 const response = await fetch('/data/videos.json');
                 const data = await response.json();
                 const videoList = document.getElementById('videoList');
+                const loading = document.getElementById('loading');
                 
                 data.videos.forEach(video => {
                     const videoCard = document.createElement('div');
@@ -62,6 +94,9 @@
                     `;
                     videoList.appendChild(videoCard);
                 });
+
+                loading.style.display = 'none';
+                videoList.style.display = 'grid';
             } catch (error) {
                 console.error('Error loading videos:', error);
             }

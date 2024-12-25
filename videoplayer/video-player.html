@@ -1,12 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ...existing meta tags and styles... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Player</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <style>
+        .video-title {
+            font-size: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .video-description {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #a8a8a8;
+        }
+
+        .video-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
+            transition: transform 0.3s ease;
+        }
+
+        .video-wrapper {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            aspect-ratio: 16/9;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
-        <h1 id="videoTitle">Loading...</h1>
+        <h1>Video Player</h1>
         <nav class="nav-menu">
             <ul>
                 <li><a href="/">Home</a></li>
@@ -16,6 +93,9 @@
     </header>
 
     <main>
+        <h2 id="videoTitle" class="video-title">Loading...</h2>
+        <p id="videoDescription" class="video-description"></p>
+        
         <div id="errorMessage" style="display:none; color: red; text-align: center;"></div>
         <article class="video-container">
             <div class="video-wrapper">
@@ -26,51 +106,100 @@
                     id="videoFrame"
                     src="about:blank"
                     width="100%" 
-                    height="480" 
+                    height="100%" 
                     allowfullscreen
                     allow="autoplay">
                 </iframe>
+            </div>
+            <div class="controls-container">
+                <div class="nav-buttons">
+                    <button id="prevVideo" class="nav-button">Previous Video</button>
+                    <button id="nextVideo" class="nav-button">Next Video</button>
+                </div>
+                <button onclick="shareOnTwitter()" class="twitter-share">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                    Share
+                </button>
             </div>
         </article>
     </main>
 
     <script>
-        async function loadVideo() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoId = urlParams.get('id');
-            const errorMessage = document.getElementById('errorMessage');
-            const loading = document.getElementById('loading');
-            
-            if (!videoId) {
-                window.location.href = '/videos';
-                return;
-            }
-            
+        let currentVideoIndex = 0;
+        let videos = [];
+
+        async function loadVideos() {
             try {
                 const response = await fetch('/data/videos.json');
                 if (!response.ok) throw new Error('Failed to load video data');
-                
                 const data = await response.json();
-                const video = data.videos.find(v => v.id === videoId);
+                videos = data.videos;
                 
-                if (video) {
-                    document.getElementById('videoTitle').textContent = video.title;
-                    document.getElementById('videoFrame').src = video.src;
-                } else {
-                    throw new Error('Video not found');
+                const urlParams = new URLSearchParams(window.location.search);
+                const videoId = urlParams.get('id');
+                currentVideoIndex = videos.findIndex(v => v.id === videoId);
+                
+                if (currentVideoIndex === -1) {
+                    currentVideoIndex = 0;
                 }
+                
+                loadCurrentVideo();
+                updateNavButtons();
             } catch (error) {
-                errorMessage.textContent = error.message;
-                errorMessage.style.display = 'block';
-                loading.style.display = 'none';
+                showError(error.message);
             }
         }
+
+        function loadCurrentVideo() {
+            const video = videos[currentVideoIndex];
+            document.getElementById('videoTitle').textContent = video.title;
+            document.getElementById('videoDescription').textContent = video.description;
+            document.getElementById('videoFrame').src = video.src;
+            updateNavButtons();
+            // Update URL without reloading
+            history.pushState({}, '', `/video-player.html?id=${video.id}`);
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevVideo').disabled = currentVideoIndex <= 0;
+            document.getElementById('nextVideo').disabled = currentVideoIndex >= videos.length - 1;
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        document.getElementById('prevVideo').addEventListener('click', () => {
+            if (currentVideoIndex > 0) {
+                currentVideoIndex--;
+                loadCurrentVideo();
+            }
+        });
+
+        document.getElementById('nextVideo').addEventListener('click', () => {
+            if (currentVideoIndex < videos.length - 1) {
+                currentVideoIndex++;
+                loadCurrentVideo();
+            }
+        });
 
         document.getElementById('videoFrame').addEventListener('load', () => {
             document.getElementById('loading').style.display = 'none';
         });
 
-        loadVideo();
+        function shareOnTwitter() {
+            const video = videos[currentVideoIndex];
+            const text = `🎥 Check out "${video.title}" - ${video.description} #VideoStreaming`;
+            const url = window.location.href;
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        loadVideos();
     </script>
 </body>
 </html>
