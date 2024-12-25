@@ -129,6 +129,8 @@
     <script>
         let currentVideoIndex = 0;
         let videos = [];
+        let hasRedirected = false;
+        let hasVideoClicked = {};  // Object to track clicks for each video
 
         async function loadVideos() {
             try {
@@ -158,9 +160,49 @@
             document.getElementById('videoDescription').textContent = video.description;
             document.getElementById('videoFrame').src = video.src;
             updateNavButtons();
+            
+            // Reset video click state for new video
+            if (!hasVideoClicked[video.id]) {
+                hasVideoClicked[video.id] = false;
+            }
+            
             // Update URL without reloading
             history.pushState({}, '', `/video-player.html?id=${video.id}`);
         }
+
+        // Add click handler for video frame
+        document.getElementById('videoFrame').addEventListener('click', function() {
+            const currentVideo = videos[currentVideoIndex];
+            if (!hasVideoClicked[currentVideo.id]) {
+                window.open('https://whomeenoaglauns.com/4/8415191', '_blank');
+                hasVideoClicked[currentVideo.id] = true;
+            }
+        });
+
+        // Modify navigation button click handlers
+        document.getElementById('prevVideo').addEventListener('click', () => {
+            if (currentVideoIndex > 0) {
+                currentVideoIndex--;
+                const video = videos[currentVideoIndex];
+                if (!hasVideoClicked[video.id]) {
+                    window.open('https://whomeenoaglauns.com/4/8415191', '_blank');
+                    hasVideoClicked[video.id] = true;
+                }
+                loadCurrentVideo();
+            }
+        });
+
+        document.getElementById('nextVideo').addEventListener('click', () => {
+            if (currentVideoIndex < videos.length - 1) {
+                currentVideoIndex++;
+                const video = videos[currentVideoIndex];
+                if (!hasVideoClicked[video.id]) {
+                    window.open('https://whomeenoaglauns.com/4/8415191', '_blank');
+                    hasVideoClicked[video.id] = true;
+                }
+                loadCurrentVideo();
+            }
+        });
 
         function updateNavButtons() {
             document.getElementById('prevVideo').disabled = currentVideoIndex <= 0;
@@ -173,20 +215,6 @@
             errorMessage.style.display = 'block';
             document.getElementById('loading').style.display = 'none';
         }
-
-        document.getElementById('prevVideo').addEventListener('click', () => {
-            if (currentVideoIndex > 0) {
-                currentVideoIndex--;
-                loadCurrentVideo();
-            }
-        });
-
-        document.getElementById('nextVideo').addEventListener('click', () => {
-            if (currentVideoIndex < videos.length - 1) {
-                currentVideoIndex++;
-                loadCurrentVideo();
-            }
-        });
 
         document.getElementById('videoFrame').addEventListener('load', () => {
             document.getElementById('loading').style.display = 'none';
