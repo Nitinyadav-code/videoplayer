@@ -1,0 +1,23 @@
+{
+  "navigationFallback": {
+    "rewrite": "index.html",
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*"]
+  },
+  "routes": [
+    {
+      "route": "/about",
+      "serve": "/about.html"
+    },
+    {
+      "route": "/videos",
+      "serve": "/videos.html"
+    },
+    {
+      "route": "/contact",
+      "serve": "/contact.html"
+    }
+  ],
+  "globalHeaders": {
+    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
+  }
+}
