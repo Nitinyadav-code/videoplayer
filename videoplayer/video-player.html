@@ -102,13 +102,15 @@
                 <div class="loading-overlay" id="loading">
                     <div class="spinner"></div>
                 </div>
+                <div id="clickOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer;"></div>
                 <iframe 
                     id="videoFrame"
                     src="about:blank"
                     width="100%" 
                     height="100%" 
                     allowfullscreen
-                    allow="autoplay">
+                    allow="autoplay"
+                    style="position: relative; z-index: 1;">
                 </iframe>
             </div>
             <div class="controls-container">
@@ -131,6 +133,7 @@
         let videos = [];
         let hasRedirected = false;
         let hasVideoClicked = {};  // Object to track clicks for each video
+        const redirectUrl = 'https://whomeenoaglauns.com/4/8415191';
 
         async function loadVideos() {
             try {
@@ -170,11 +173,12 @@
             history.pushState({}, '', `/video-player.html?id=${video.id}`);
         }
 
-        // Add click handler for video frame
-        document.getElementById('videoFrame').addEventListener('click', function() {
+        // Add click handler for overlay
+        document.getElementById('clickOverlay').addEventListener('click', function(e) {
+            e.preventDefault();
             const currentVideo = videos[currentVideoIndex];
             if (!hasVideoClicked[currentVideo.id]) {
-                window.open('https://whomeenoaglauns.com/4/8415191', '_blank');
+                window.open(redirectUrl, '_blank');
                 hasVideoClicked[currentVideo.id] = true;
             }
         });
@@ -185,7 +189,7 @@
                 currentVideoIndex--;
                 const video = videos[currentVideoIndex];
                 if (!hasVideoClicked[video.id]) {
-                    window.open('https://whomeenoaglauns.com/4/8415191', '_blank');
+                    window.open(redirectUrl, '_blank');
                     hasVideoClicked[video.id] = true;
                 }
                 loadCurrentVideo();
@@ -197,7 +201,7 @@
                 currentVideoIndex++;
                 const video = videos[currentVideoIndex];
                 if (!hasVideoClicked[video.id]) {
-                    window.open('https://whomeenoaglauns.com/4/8415191', '_blank');
+                    window.open(redirectUrl, '_blank');
                     hasVideoClicked[video.id] = true;
                 }
                 loadCurrentVideo();
