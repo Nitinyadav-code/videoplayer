@@ -167,15 +167,15 @@
                 <div class="loading-overlay" id="loading">
                     <div class="spinner"></div>
                 </div>
-                <div id="clickOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer;"></div>
+                <div id="videoPlayer"></div>
                 <iframe 
                     id="videoFrame"
-                    src="about:blank"
+                    src=""
                     width="100%" 
                     height="100%" 
                     allowfullscreen
-                    allow="autoplay"
-                    style="position: relative; z-index: 1;">
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;">
                 </iframe>
             </div>
             <div class="controls-container">
@@ -227,12 +227,19 @@
             document.getElementById('videoTitle').textContent = video.title;
             document.getElementById('videoDescription').textContent = video.description;
             
-            // Reset overlay visibility for new video
-            const overlay = document.getElementById('clickOverlay');
-            overlay.style.display = hasVideoClicked[video.id] ? 'none' : 'block';
+            // Clear existing iframe source
+            const videoFrame = document.getElementById('videoFrame');
+            videoFrame.src = '';
             
-            // Set video source after overlay handling
-            document.getElementById('videoFrame').src = video.src;
+            // Set new video source with proper parameters
+            const videoUrl = new URL(video.src);
+            if (videoUrl.hostname === 'drive.google.com') {
+                // Add necessary parameters for Google Drive videos
+                videoFrame.src = `${video.src}?autoplay=1&enablejsapi=1`;
+            } else {
+                videoFrame.src = video.src;
+            }
+            
             updateNavButtons();
             history.pushState({}, '', `/video-player.html?id=${video.id}`);
         }
@@ -257,6 +264,7 @@
                     window.open(redirectUrl, '_blank');
                     hasVideoClicked[video.id] = true;
                 }
+                document.getElementById('loading').style.display = 'flex';
                 loadCurrentVideo();
             }
         });
@@ -269,6 +277,7 @@
                     window.open(redirectUrl, '_blank');
                     hasVideoClicked[video.id] = true;
                 }
+                document.getElementById('loading').style.display = 'flex';
                 loadCurrentVideo();
             }
         });
@@ -284,6 +293,10 @@
             errorMessage.style.display = 'block';
             document.getElementById('loading').style.display = 'none';
         }
+
+        document.getElementById('videoFrame').addEventListener('error', (e) => {
+            showError('Failed to load video. Please try again.');
+        });
 
         document.getElementById('videoFrame').addEventListener('load', () => {
             document.getElementById('loading').style.display = 'none';
