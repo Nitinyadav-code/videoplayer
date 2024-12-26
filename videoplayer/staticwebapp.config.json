@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*", "/sitemap.xml"]
   },
   "routes": [
     {
@@ -24,6 +24,14 @@
       "route": "/data/*",
       "headers": {
         "cache-control": "no-cache"
+      }
+    },
+    {
+      "route": "/sitemap.xml",
+      "serve": "/sitemap.xml",
+      "headers": {
+        "content-type": "application/xml",
+        "cache-control": "must-revalidate, max-age=86400"
       }
     }
   ],
