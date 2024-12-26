@@ -167,12 +167,12 @@
                 <div class="loading-overlay" id="loading">
                     <div class="spinner"></div>
                 </div>
-                <div id="videoPlayer"></div>
                 <iframe 
                     id="videoFrame"
                     src=""
                     width="100%" 
                     height="100%" 
+                    frameborder="0"
                     allowfullscreen
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;">
@@ -196,9 +196,6 @@
     <script>
         let currentVideoIndex = 0;
         let videos = [];
-        let hasRedirected = false;
-        let hasVideoClicked = {};  // Object to track clicks for each video
-        const redirectUrl = 'https://whomeenoaglauns.com/4/8415191';
 
         async function loadVideos() {
             try {
@@ -218,53 +215,39 @@
                 loadCurrentVideo();
                 updateNavButtons();
             } catch (error) {
-                showError(error.message);
+                showError('Error loading video data: ' + error.message);
             }
         }
 
         function loadCurrentVideo() {
             const video = videos[currentVideoIndex];
+            if (!video) {
+                showError('Video not found');
+                return;
+            }
+
             document.getElementById('videoTitle').textContent = video.title;
             document.getElementById('videoDescription').textContent = video.description;
             
-            // Clear existing iframe source
             const videoFrame = document.getElementById('videoFrame');
-            videoFrame.src = '';
-            
-            // Set new video source with proper parameters
-            const videoUrl = new URL(video.src);
-            if (videoUrl.hostname === 'drive.google.com') {
-                // Add necessary parameters for Google Drive videos
-                videoFrame.src = `${video.src}?autoplay=1&enablejsapi=1`;
-            } else {
-                videoFrame.src = video.src;
+            document.getElementById('loading').style.display = 'block';
+
+            // Format Google Drive URL correctly
+            let videoUrl = video.src;
+            if (videoUrl.includes('drive.google.com')) {
+                // Ensure the URL is in the correct format for embedding
+                videoUrl = videoUrl.replace('/view', '/preview');
             }
-            
+
+            videoFrame.src = videoUrl;
             updateNavButtons();
             history.pushState({}, '', `/video-player.html?id=${video.id}`);
         }
 
-        // Add click handler for overlay
-        document.getElementById('clickOverlay').addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentVideo = videos[currentVideoIndex];
-            if (!hasVideoClicked[currentVideo.id]) {
-                window.open(redirectUrl, '_blank');
-                hasVideoClicked[currentVideo.id] = true;
-                this.style.display = 'none'; // Hide overlay after redirect
-            }
-        });
-
-        // Modify navigation button click handlers
+        // Update navigation handlers
         document.getElementById('prevVideo').addEventListener('click', () => {
             if (currentVideoIndex > 0) {
                 currentVideoIndex--;
-                const video = videos[currentVideoIndex];
-                if (!hasVideoClicked[video.id]) {
-                    window.open(redirectUrl, '_blank');
-                    hasVideoClicked[video.id] = true;
-                }
-                document.getElementById('loading').style.display = 'flex';
                 loadCurrentVideo();
             }
         });
@@ -272,14 +255,17 @@
         document.getElementById('nextVideo').addEventListener('click', () => {
             if (currentVideoIndex < videos.length - 1) {
                 currentVideoIndex++;
-                const video = videos[currentVideoIndex];
-                if (!hasVideoClicked[video.id]) {
-                    window.open(redirectUrl, '_blank');
-                    hasVideoClicked[video.id] = true;
-                }
-                document.getElementById('loading').style.display = 'flex';
                 loadCurrentVideo();
             }
+        });
+
+        // Error and loading handlers
+        document.getElementById('videoFrame').addEventListener('error', (e) => {
+            showError('Failed to load video. Please try again.');
+        });
+
+        document.getElementById('videoFrame').addEventListener('load', () => {
+            document.getElementById('loading').style.display = 'none';
         });
 
         function updateNavButtons() {
@@ -293,14 +279,6 @@
             errorMessage.style.display = 'block';
             document.getElementById('loading').style.display = 'none';
         }
-
-        document.getElementById('videoFrame').addEventListener('error', (e) => {
-            showError('Failed to load video. Please try again.');
-        });
-
-        document.getElementById('videoFrame').addEventListener('load', () => {
-            document.getElementById('loading').style.display = 'none';
-        });
 
         function shareOnTwitter() {
             const video = videos[currentVideoIndex];
