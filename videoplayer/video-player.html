@@ -20,23 +20,28 @@
         }
 
         .video-container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 2rem auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(4px);
-            transition: transform 0.3s ease;
+            width: 100%;
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 1rem;
+            box-sizing: border-box;
         }
 
         .video-wrapper {
             position: relative;
-            border-radius: 10px;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            aspect-ratio: 16/9;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .controls-container {
@@ -78,6 +83,64 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .video-container {
+                padding: 0.5rem;
+                margin: 0.5rem auto;
+            }
+
+            .video-title {
+                font-size: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .video-description {
+                padding: 0 1rem;
+                font-size: 0.9rem;
+            }
+
+            .controls-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0.5rem;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-button {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+                flex: 1;
+                margin: 0 0.25rem;
+            }
+        }
+
+        /* Tablet-specific styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .video-container {
+                width: 90%;
+            }
+        }
+
+        /* Handle orientation changes */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            .header {
+                padding: 0.5rem;
+            }
+
+            .video-title {
+                margin: 0.5rem 0;
+            }
+
+            .video-description {
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="121583" async data-cfasync="false"></script>

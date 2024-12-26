@@ -62,3 +62,54 @@ body {
     border-radius: 15px;
     margin-bottom: 2rem;
 }
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .nav-menu {
+        padding: 0.5rem;
+    }
+
+    .nav-menu ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-menu a {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .container {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+/* Improve tap targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+    .nav-menu a {
+        padding: 0.8rem;
+    }
+
+    button, 
+    .nav-button, 
+    .video-card a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Handle orientation changes */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    .header {
+        padding: 0.5rem;
+    }
+
+    .nav-menu {
+        padding: 0.25rem;
+    }
+}

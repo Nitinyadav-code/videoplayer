@@ -6,9 +6,10 @@
     <style>
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            box-sizing: border-box;
             animation: fadeIn 0.5s ease-in;
         }
         
@@ -19,6 +20,8 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(4px);
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .video-card:hover {
@@ -60,6 +63,30 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+                padding: 0.5rem;
+            }
+
+            .video-card {
+                margin-bottom: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+                padding: 0.5rem;
+            }
+        }
+
+        /* Tablet-specific styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="121583" async data-cfasync="false"></script>
