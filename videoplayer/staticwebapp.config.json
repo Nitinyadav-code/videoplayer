@@ -38,12 +38,7 @@
         "cache-control": "must-revalidate, max-age=86400"
       }
     },
-    {
-      "route": "/images/*",
-      "headers": {
-        "cache-control": "public, max-age=604800"
-      }
-    },
+    
     {
       "route": "/images/*",
       "serve": "/images/*"
