@@ -18,11 +18,16 @@
     },
     {
       "route": "/video-player",
-      "serve": "/video-player.html"
+      "serve": "/video-player.html",
+      "headers": {
+        "cache-control": "no-cache"
+      }
     },
     {
-      "route": "/video-player",
-      "serve": "/preview-image.jpg"
+      "route": "/images/preview-image.jpg",
+      "headers": {
+        "cache-control": "public, max-age=604800"
+      }
     },
     {
       "route": "/data/*",
