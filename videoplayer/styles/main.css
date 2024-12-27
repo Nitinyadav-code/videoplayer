@@ -21,6 +21,19 @@ body {
     backdrop-filter: blur(10px);
     margin-bottom: 2rem;
 }
+.keywords h2 {
+    font-size: 1.5rem;
+    color: #333;
+    line-height: 1.6;
+    text-align: center;
+    padding: 10px;
+  }
+  .keywords p {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+  }
 
 .nav-menu {
     background: rgba(0, 0, 0, 0.2);
