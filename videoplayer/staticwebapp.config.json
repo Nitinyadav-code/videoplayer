@@ -21,6 +21,10 @@
       "serve": "/video-player.html"
     },
     {
+      "route": "/video-player",
+      "serve": "/preview-image.jpg"
+    },
+    {
       "route": "/data/*",
       "headers": {
         "cache-control": "no-cache"
