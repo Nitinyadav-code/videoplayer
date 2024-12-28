@@ -14,19 +14,19 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.alllinkprovide.me">
     <meta property="og:image" content="https://www.alllinkprovide.me/preview-image.jpg">
+
+
+    
+
     
     <!-- Enhanced Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="player">
+   
     <meta name="twitter:site" content="@sanskarilad">
     <meta name="twitter:creator" content="@sanskarilad">
-    <meta name="twitter:title" content="Best Video Streaming Platform">
-    <meta name="twitter:description" content="Watch premium videos instantly! Stream high-quality content for free. #VideoStreaming #Entertainment">
-    <meta name="twitter:image" content="https://www.alllinkprovide.me/preview-image.jpg">
     <meta name="twitter:image:alt" content="Video streaming preview">
-    <!-- Twitter Player Card specifics -->
-    <meta name="twitter:player" content="https://www.alllinkprovide.me">
-    <meta name="twitter:player:width" content="480">
-    <meta name="twitter:player:height" content="480">
+    <!-- rest are in the bottom using js-->
+
+
 
 
 
@@ -328,5 +328,21 @@
 
         loadVideos();
     </script>
+    <script>
+    // Get video ID from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('id');
+    
+    // Update Twitter meta tags dynamically
+    document.querySelector('meta[name="twitter:card"]').setAttribute('content', 'player');
+    document.querySelector('meta[name="twitter:title"]').setAttribute('content', 'Video #' + videoId);
+    document.querySelector('meta[name="twitter:description"]').setAttribute('content', 'Watch this amazing video on our platform');
+    document.querySelector('meta[name="twitter:player"]').setAttribute('content', 
+        `https://www.alllinkprovide.me/video-player.html?id=${videoId}`);
+    document.querySelector('meta[name="twitter:player:width"]').setAttribute('content', '1280');
+    document.querySelector('meta[name="twitter:player:height"]').setAttribute('content', '720');
+    document.querySelector('meta[name="twitter:image"]').setAttribute('content', 
+        `https://www.alllinkprovide.me/images/${videoId}.jpg`);
+</script>
 </body>
 </html>
