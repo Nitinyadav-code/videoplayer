@@ -125,8 +125,17 @@
             border-radius: 8px;
             margin-bottom: 10px;
             transition: transform 0.3s ease;
+            background-color: #1a1a1a; /* Placeholder background */
         }
         
+        .video-thumbnail.error {
+            /* Show when image fails to load */
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23666" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 48px;
+        }
+
         .video-card:hover .video-thumbnail {
             transform: scale(1.05);
         }
@@ -181,8 +190,18 @@
                 data.videos.forEach(video => {
                     const videoCard = document.createElement('div');
                     videoCard.className = 'video-card';
+                    
+                    // Add crossorigin attribute and error handling for images
+                    const imgUrl = video.thumbnail;
                     videoCard.innerHTML = `
-                        <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
+                        <img 
+                            src="${imgUrl}" 
+                            alt="${video.title}" 
+                            class="video-thumbnail"
+                            crossorigin="anonymous"
+                            onerror="this.classList.add('error')"
+                            referrerpolicy="no-referrer"
+                        >
                         <div class="video-info">
                             <h3>${video.title}</h3>
                             <p>${video.description}</p>
@@ -196,6 +215,7 @@
                 videoList.style.display = 'grid';
             } catch (error) {
                 console.error('Error loading videos:', error);
+                document.getElementById('loading').textContent = 'Error loading videos. Please try again later.';
             }
         }
 
