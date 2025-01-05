@@ -23,7 +23,13 @@
         "cache-control": "no-cache"
       }
     },
-    
+    {
+      "route": "/videoplayer1",
+      "serve": "/videoplayer1.html",
+      "headers": {
+        "cache-control": "no-cache"
+      }
+    },
     {
       "route": "/data/*",
       "headers": {
@@ -38,7 +44,6 @@
         "cache-control": "must-revalidate, max-age=86400"
       }
     },
-    
     {
       "route": "/images/*",
       "serve": "/images/*"
