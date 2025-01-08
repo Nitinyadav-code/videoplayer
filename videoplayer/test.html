@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Player</title>
+    <style>
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+    <script>
+        // Prevent right-click on video
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'VIDEO') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="video-container">
+        <video controls controlsList="nodownload">
+            <source src="https://www.dropbox.com/scl/fi/8hf21p9svduynxi8c3w3m/vid_720p-1.mp4?rlkey=b48nrt4h0i6xuv2zgplnugbdt&raw=1" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+</body>
+</html>
