@@ -1,5 +1,8 @@
+
 User-agent: *
 Allow: /
+Disallow: /videos.json
+Disallow: /staticwebapp.config.json
 Sitemap: https://www.alllinkprovide.me/sitemap.xml
 
 
