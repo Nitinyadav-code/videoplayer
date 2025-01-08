@@ -6,6 +6,13 @@
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
+    
+    <url>
+        <loc>https://alllinkprovide.me/videoplayer1</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
         <loc>https://www.alllinkprovide.me/videos</loc>
         <lastmod>2024-01-20</lastmod>
