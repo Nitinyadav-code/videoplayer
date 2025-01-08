@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Player</title>
     <style>
         .video-container {
@@ -11,6 +13,58 @@
         video {
             width: 100%;
             height: auto;
+        }
+        .nav-menu {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Header specific styles */
+        .header {
+            width: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive header adjustments */
+        @media screen and (max-width: 768px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
     <script>
@@ -23,6 +77,18 @@
     </script>
 </head>
 <body>
+    <header class="header">
+        <h1>Alllinkprovide-Porn video site- Watch hot porn videos.</h1>
+        <nav class="nav-menu">
+            <ul>
+                <li class="highlight"><a href="/">Home</a></li>
+                <li><a href="/videoplayer1">Special Videos</a></li>
+                <li><a href="/videos">Videos</a></li>
+                <li><a href="/about">About</a></li>
+                
+            </ul>
+        </nav>
+    </header>
     <div class="video-container">
         <video controls controlsList="nodownload">
             <source src="https://www.dropbox.com/scl/fi/8hf21p9svduynxi8c3w3m/vid_720p-1.mp4?rlkey=b48nrt4h0i6xuv2zgplnugbdt&raw=1" type="video/mp4">

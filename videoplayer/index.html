@@ -272,6 +272,36 @@
         .nav-menu a:hover {
             background-color: var(--accent-color);
         }
+
+        /* Header specific styles */
+        .header {
+            width: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive header adjustments */
+        @media screen and (max-width: 768px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+
+
+
         .highlight {
     background-color: var(--secondary-color);
     font-weight: bold;
