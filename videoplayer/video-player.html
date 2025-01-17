@@ -31,6 +31,7 @@
 
     <title>Alllinkprovide-Porn video site- Watch hot porn videos.</title>
     <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .highlight {
     background-color: #2196f3;
@@ -38,6 +39,68 @@
     border-radius: 4px;
 }
 
+/* Controls Container */
+.controls-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px 30px;
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Navigation Buttons Container */
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Navigation Buttons */
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
+
+/* Responsive Font Size */
+.nav-button i {
+    font-size: 1.2rem; /* Icon size */
+}
+
+/* Icons */
+#prevVideo i::before {
+    content: "\f104"; /* Font Awesome's "angle-left" */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+#nextVideo i::before {
+    content: "\f105"; /* Font Awesome's "angle-right" */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
     </style>
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="121583" async data-cfasync="false"></script>
 </head>
@@ -113,135 +176,114 @@
         </div>
     </main>
     <script>
-        let currentVideoIndex = 0;
-        let videos = [];
+       let currentVideoIndex = 0;
+let videos = [];
 
-        async function loadVideos() {
-            try {
-                const response = await fetch('/data/videos.json');
-                if (!response.ok) throw new Error('Failed to load video data');
-                const data = await response.json();
-                videos = data.videos;
-                
-                const urlParams = new URLSearchParams(window.location.search);
-                const videoId = urlParams.get('id');
-                currentVideoIndex = videos.findIndex(v => v.id === videoId);
-                
-                if (currentVideoIndex === -1) {
-                    currentVideoIndex = 0;
-                }
-                
-                loadCurrentVideo();
-                updateNavButtons();
-            } catch (error) {
-                showError('Error loading video data: ' + error.message);
-            }
+async function loadVideos() {
+    try {
+        const response = await fetch('/data/videos.json');
+        if (!response.ok) throw new Error('Failed to load video data');
+        const data = await response.json();
+        videos = data.videos;
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('id');
+        currentVideoIndex = videos.findIndex(v => v.id === videoId);
+        
+        if (currentVideoIndex === -1) {
+            currentVideoIndex = 0;
         }
+        
+        loadCurrentVideo();
+        updateNavButtons();
+    } catch (error) {
+        showError('Error loading video data: ' + error.message);
+    }
+}
 
-        function loadCurrentVideo() {
-            const video = videos[currentVideoIndex];
-            if (!video) {
-                showError('Video not found');
-                return;
-            }
+function loadCurrentVideo() {
+    const video = videos[currentVideoIndex];
+    if (!video) {
+        showError('Video not found');
+        return;
+    }
 
-            document.getElementById('videoTitle').textContent = video.title;
-            document.getElementById('videoDescription').textContent = video.description;
-            
-            const videoFrame = document.getElementById('videoFrame');
-            document.getElementById('loading').style.display = 'block';
+    document.getElementById('videoTitle').textContent = video.title;
+    document.getElementById('videoDescription').textContent = video.description;
+    
+    const videoFrame = document.getElementById('videoFrame');
+    document.getElementById('loading').style.display = 'block';
 
-            // Format Google Drive URL correctly
-            let videoUrl = video.src;
-            if (videoUrl.includes('drive.google.com')) {
-                // Ensure the URL is in the correct format for embedding
-                videoUrl = videoUrl.replace('/view', '/preview');
-            }
+    let videoUrl = video.src;
+    if (videoUrl.includes('drive.google.com')) {
+        videoUrl = videoUrl.replace('/view', '/preview');
+    }
 
-            videoFrame.src = videoUrl;
-            updateNavButtons();
-            history.pushState({}, '', `/video-player.html?id=${video.id}`);
+    videoFrame.src = videoUrl;
+    updateNavButtons();
+    history.pushState({}, '', `/video-player.html?id=${video.id}`);
+}
+
+// Single event listener for previous button
+document.getElementById('prevVideo').addEventListener('click', () => {
+    try {
+        if (currentVideoIndex > 0) {
+            currentVideoIndex--;
+            loadCurrentVideo();
+            document.querySelector('.video-container').scrollIntoView({behavior: 'smooth'});
         }
+    } catch (error) {
+        showError('Error navigating to previous video: ' + error.message);
+    }
+});
 
-        // Update navigation handlers
-        document.getElementById('prevVideo').addEventListener('click', () => {
-            if (currentVideoIndex > 0) {
-                currentVideoIndex--;
-                loadCurrentVideo();
-            }
-        });
-
-        document.getElementById('nextVideo').addEventListener('click', () => {
-            if (currentVideoIndex < videos.length - 1) {
-                currentVideoIndex++;
-                loadCurrentVideo();
-            }
-        });
-
-        // Error and loading handlers
-        document.getElementById('videoFrame').addEventListener('error', (e) => {
-            showError('Failed to load video. Please try again.');
-        });
-
-        document.getElementById('videoFrame').addEventListener('load', () => {
-            document.getElementById('loading').style.display = 'none';
-        });
-
-        function updateNavButtons() {
-            const prevButton = document.getElementById('prevVideo');
-            const nextButton = document.getElementById('nextVideo');
-            
-            // Disable/enable buttons based on current position
-            prevButton.disabled = currentVideoIndex <= 0;
-            nextButton.disabled = currentVideoIndex >= videos.length - 1;
-            
-            // Add visual feedback for disabled state
-            prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
-            nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
+// Single event listener for next button
+document.getElementById('nextVideo').addEventListener('click', () => {
+    try {
+        if (currentVideoIndex < videos.length - 1) {
+            currentVideoIndex++;
+            loadCurrentVideo();
+            document.querySelector('.video-container').scrollIntoView({behavior: 'smooth'});
         }
+    } catch (error) {
+        showError('Error navigating to next video: ' + error.message);
+    }
+});
 
-        // Improved navigation handlers with error handling
-        document.getElementById('prevVideo').addEventListener('click', () => {
-            try {
-                if (currentVideoIndex > 0) {
-                    currentVideoIndex--;
-                    loadCurrentVideo();
-                    // Scroll to top of video
-                    document.querySelector('.video-container').scrollIntoView({behavior: 'smooth'});
-                }
-            } catch (error) {
-                showError('Error navigating to previous video: ' + error.message);
-            }
-        });
+function updateNavButtons() {
+    const prevButton = document.getElementById('prevVideo');
+    const nextButton = document.getElementById('nextVideo');
+    
+    prevButton.disabled = currentVideoIndex <= 0;
+    nextButton.disabled = currentVideoIndex >= videos.length - 1;
+    
+    prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
+    nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
+}
 
-        document.getElementById('nextVideo').addEventListener('click', () => {
-            try {
-                if (currentVideoIndex < videos.length - 1) {
-                    currentVideoIndex++;
-                    loadCurrentVideo();
-                    // Scroll to top of video
-                    document.querySelector('.video-container').scrollIntoView({behavior: 'smooth'});
-                }
-            } catch (error) {
-                showError('Error navigating to next video: ' + error.message);
-            }
-        });
+document.getElementById('videoFrame').addEventListener('error', (e) => {
+    showError('Failed to load video. Please try again.');
+});
 
-        function showError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            document.getElementById('loading').style.display = 'none';
-        }
+document.getElementById('videoFrame').addEventListener('load', () => {
+    document.getElementById('loading').style.display = 'none';
+});
 
-        function shareOnTwitter() {
-            const video = videos[currentVideoIndex];
-            const text = `🎥  "${video.title}" - ${video.description} `;
-            const url = window.location.href;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-        }
+function showError(message) {
+    const errorMessage = document.getElementById('errorMessage');
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    document.getElementById('loading').style.display = 'none';
+}
 
-        loadVideos();
+function shareOnTwitter() {
+    const video = videos[currentVideoIndex];
+    const text = `🎥  "${video.title}" - ${video.description} `;
+    const url = window.location.href;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+loadVideos();
     </script>
 </body>
 </html>
