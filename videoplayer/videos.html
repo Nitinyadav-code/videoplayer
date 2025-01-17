@@ -183,7 +183,15 @@
 
 
 
-
+<!-- <img 
+     src="${imgUrl}" 
+    alt="${video.title}" 
+    class="video-thumbnail"
+    crossorigin="anonymous"
+    onerror="this.classList.add('error')"
+    referrerpolicy="no-referrer"
+    >
+                        -->
 
     <script>
         async function loadVideoList() {
@@ -200,14 +208,16 @@
                     // Add crossorigin attribute and error handling for images
                     const imgUrl = video.thumbnail;
                     videoCard.innerHTML = `
-                        <img 
-                            src="${imgUrl}" 
-                            alt="${video.title}" 
+
+                        <iframe src="${imgUrl}" 
+                             alt="${video.title}" 
                             class="video-thumbnail"
                             crossorigin="anonymous"
                             onerror="this.classList.add('error')"
-                            referrerpolicy="no-referrer"
-                        >
+                            referrerpolicy="no-referrer" >
+                         </iframe>
+
+                        
                         <div class="video-info">
                             <h3>${video.title}</h3>
                             <p>${video.description}</p>
