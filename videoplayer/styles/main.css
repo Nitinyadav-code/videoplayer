@@ -1,8 +1,10 @@
 :root {
-    --primary-color: #2196f3;
-    --background-color: #0f0f0f;
-    --text-color: #ffffff;
-    --secondary-color: #1a1a1a;
+    
+        --primary-color: #1a1a2e;
+        --secondary-color: #16213e;
+        --accent-color: #4a90e2;
+        --text-color: #ffffff;
+   
 }
 
 body {
@@ -12,6 +14,18 @@ body {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     font-family: 'Poppins', sans-serif;
     color: var(--text-color);
+}
+
+video {
+    width: 100%;
+    height: auto;
+}
+
+video::-webkit-media-controls-download-button {
+    display: none;
+}
+video::-webkit-media-controls-enclosure {
+    overflow: hidden;
 }
 
 .header {
@@ -259,7 +273,9 @@ body {
     }
 }
 
-
+a{
+    text-decoration: none;
+}
 
 p{
     color: white;
