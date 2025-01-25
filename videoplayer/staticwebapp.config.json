@@ -31,12 +31,6 @@
       }
     },
     {
-      "route": "/data/*",
-      "headers": {
-        "cache-control": "no-cache"
-      }
-    },
-    {
       "route": "/sitemap.xml",
       "serve": "/sitemap.xml",
       "headers": {
@@ -45,9 +39,19 @@
       }
     },
     {
-      "route": "/images/*",
-      "serve": "/images/*"
+      "route":"/gallery",
+      "serve":"/gallery.html"
+    },
+    {
+      "route":"/termsandconditions",
+      "serve":"/termsandconditions.html"
+
+    },
+    {
+      "route":"/privacypolicy",
+      "serve":"/privacypolicy.html"
     }
+    
   ],
   "globalHeaders": {
     "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
