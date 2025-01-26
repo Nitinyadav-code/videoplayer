@@ -24,6 +24,11 @@
       }
     },
     {
+      "route": "Videos1",
+      "serve": "/videocards.html"
+
+    },
+    {
       "route": "/videoplayer1",
       "serve": "/videoplayer1.html",
       "headers": {

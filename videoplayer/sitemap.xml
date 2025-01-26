@@ -8,28 +8,59 @@
     </url>
     
     <url>
-        <loc>https://alllinkprovide.me/videoplayer1</loc>
-        <lastmod>2024-01-20</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://www.alllinkprovide.me/videos</loc>
-        <lastmod>2024-01-20</lastmod>
-        <changefreq>hourly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://alllinkprovide.me/video-player.html</loc>
-        <lastmod>2024-01-20</lastmod>
-        <changefreq>hourly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
         <loc>https://www.alllinkprovide.me/about</loc>
         <lastmod>2024-01-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
+    <url>
+        <loc>https://www.alllinkprovide.me/videos</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>hourly</changefreq>
+        <priority>1</priority>
+    </url>
+    
+    
+    <url>
+        <loc>https://www.alllinkprovide.me/video-player</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>hourly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.alllinkprovide.me/Videos1</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.alllinkprovide.me/videoplayer1</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>hourly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.alllinkprovide.me/gallery</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.alllinkprovide.me/termsandconditions</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.alllinkprovide.me/privacypolicy</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://kulroakonsu.net/88/tag.min.js" data-zone="121583" async data-cfasync="false"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Watch Hot porn videos and sexy Videos and desi porn videos. High-quality Hot porn video content for entertainment and learning.">
@@ -13,9 +14,10 @@
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Mom Son Porn Video Streaming Platform">
     <meta property="og:description" content="Watch Hot porn videos and sexy Videos and desi porn videos. High-quality Hot porn video content for entertainment and learning.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.alllinkprovide.me/videoplayer1">
-    <meta property="og:image" content="https://www.alllinkprovide.me/images/vid1.jpg">
+    <meta property="og:type" content="website"> <!-- Open Graph / Social Media Meta Tags -->     
+      <meta property="og:url" content="https://www.alllinkprovide.me">
+      <meta property="og:image" content="/images/3.jpg">
+      
     
     
     <meta name="twitter:card" content="player">
@@ -78,8 +80,36 @@
             }
         });
     </script>
-    <script src="https://alwingulla.com/88/tag.min.js" data-zone="121583" async data-cfasync="false"></script>
-
+    
+    <script>
+    async function updateVideoStats(videoId, statType) {
+        try {
+            // Get current stats from localStorage
+            const statsKey = `video_${videoId}_stats`;
+            let stats = JSON.parse(localStorage.getItem(statsKey) || '{}');
+            
+            // Initialize if not exists
+            if (!stats[statType]) {
+                stats[statType] = 0;
+            }
+            
+            // Increment stat
+            stats[statType]++;
+            
+            // Save back to localStorage
+            localStorage.setItem(statsKey, JSON.stringify(stats));
+            
+            // Update UI
+            const statsElement = document.querySelector('.video-stats');
+            const statSpan = statsElement.querySelector(`[data-stat="${statType}"]`);
+            if (statSpan) {
+                statSpan.textContent = stats[statType];
+            }
+        } catch (error) {
+            console.error('Error updating stats:', error);
+        }
+    }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -87,8 +117,11 @@
         <nav class="nav-menu">
             <ul>
                 <li><a href="/">Home</a></li>
+                <li ><a href="/Videos1">Videos</a></li>
                 <li class="highlight"><a href="/videoplayer1">Special Videos</a></li>
-                <li><a href="/videos">All Videos</a></li>
+                
+                <li ><a href="/videos">Short Videos</a></li>
+                
                 <li><a href="/gallery">Images</a></li>
                 <li><a href="/about">About</a></li>
                
@@ -110,12 +143,10 @@
         <h2 class="video-title">Mom Teaching son How to Fuck</h2>
         
         <div class="video-container">
-
-            
-        <video controls controlsList="nodownload">
-            <source src="https://www.dropbox.com/scl/fi/8hf21p9svduynxi8c3w3m/vid_720p-1.mp4?rlkey=b48nrt4h0i6xuv2zgplnugbdt&raw=1" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+            <video controls controlsList="nodownload" poster="">
+                <source src="https://www.dropbox.com/scl/fi/8hf21p9svduynxi8c3w3m/vid_720p-1.mp4?rlkey=b48nrt4h0i6xuv2zgplnugbdt&raw=1" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <div class="video-info">
@@ -130,13 +161,13 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/>
                     </svg>
-                    Like
+                    Like <span class="stat-count" data-stat="likes">0</span>
                 </button>
                 <button class="action-button" id="shareButton">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M14 3v6C6.22 10.13 3.11 15.33 2 21c2.78-3.97 6.44-6 12-6v6l8-9-8-9z"/>
                     </svg>
-                    Share
+                    Share <span class="stat-count" data-stat="shares">0</span>
                 </button>
                 <button class="action-button">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -156,19 +187,61 @@
 
         <h3>Related Videos</h3>
         <div class="related-videos">
-            <!-- Example related video cards -->
-            
-            <div class="related-video-card">
-                
-                <img src="images/vid1.jpg" alt="Video thumbnail" class="thumbnail">
-                <div class="video-card-info">
-                    <h4 class="video-card-title">Son is watching mom showering</h4>
-                    <span>10K views</span>
-                </div>
-            </div>
-            <!-- Add more related video cards as needed -->
+            <!-- Videos will be loaded dynamically -->
         </div>
     </main>
+
+    <style>
+   
+    .stat-count {
+        background: rgba(33, 150, 243, 0.2);
+        padding: 2px 6px;
+        border-radius: 12px;
+        margin-left: 4px;
+        font-size: 0.9em;
+    }
+    .related-videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.related-video-card {
+    background: #16213e;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.related-video-card:hover {
+    transform: translateY(-5px);
+}
+
+.related-video-card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.related-video-card .video-card-info {
+    padding: 12px;
+}
+
+.related-video-card .video-card-title {
+    font-size: 14px;
+    margin: 0 0 8px 0;
+    color: #fff;
+}
+
+.related-video-card .video-stats {
+    font-size: 12px;
+    color: #989696;
+    display: flex;
+    justify-content: space-between;
+}
+    </style>
 
     <script>
         // Add any JavaScript functionality here
@@ -195,5 +268,120 @@
             });
         });
     </script>
+    <script>
+    async function loadVideoById() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('id');
+            const videoUrl = urlParams.get('video');
+            
+            if (!videoId) {
+                console.error('No video ID provided');
+                return;
+            }
+
+            // First update the video source if we have the URL parameter
+            if (videoUrl) {
+                const videoElement = document.querySelector('video');
+                const sourceElement = videoElement.querySelector('source');
+                sourceElement.src = decodeURIComponent(videoUrl);
+                videoElement.load();
+            }
+
+            const response = await fetch('data/videos1.json');
+            const data = await response.json();
+            
+            const video = data.videos.find(v => v.id === videoId);
+            if (video) {
+                // Update page title
+                document.title = `${video.title} - Alllinkprovide`;
+                
+                // Update video title
+                document.querySelector('.video-title').textContent = video.title;
+                
+                // Set video poster (thumbnail)
+                const videoElement = document.querySelector('video');
+                videoElement.poster = video.thumbnail;
+                
+                // Update video source if not already set by URL parameter
+                if (!videoUrl) {
+                    const sourceElement = videoElement.querySelector('source');
+                    sourceElement.src = video.videoUrl;
+                    videoElement.load();
+                }
+                
+                // Update description
+                document.querySelector('.video-description p').textContent = video.description;
+                
+                // Update stats display
+                document.querySelector('.video-stats').innerHTML = `
+                    <span>${video.views} views</span>  
+                    <span>Posted: ${video.postedDate}</span>  
+                    <span>Duration: ${video.duration}</span> 
+                `;
+
+                // Get stored stats from localStorage
+                const storedStats = JSON.parse(localStorage.getItem(`video_${videoId}_stats`) || '{}');
+                const likes = storedStats.likes || video.stats?.likes || 0;
+                const shares = storedStats.shares || video.stats?.shares || 0;
+
+                // Update like and share counters
+                document.querySelector('[data-stat="likes"]').textContent = likes;
+                document.querySelector('[data-stat="shares"]').textContent = shares;
+
+                // Initialize local storage if needed
+                if (!localStorage.getItem(`video_${videoId}_stats`)) {
+                    localStorage.setItem(`video_${videoId}_stats`, JSON.stringify({
+                        likes: video.stats?.likes || 0,
+                        shares: video.stats?.shares || 0
+                    }));
+                }
+
+                // Load related videos
+                await loadRelatedVideos(videoId);
+            }
+        } catch (error) {
+            console.error('Error loading video:', error);
+        }
+    }
+
+    async function loadRelatedVideos(currentVideoId) {
+        try {
+            const response = await fetch('data/videos1.json');
+            const data = await response.json();
+            
+            // Filter out current video and get random videos
+            const otherVideos = data.videos.filter(v => v.id !== currentVideoId);
+            const randomVideos = otherVideos
+                .sort(() => 0.5 - Math.random()) // Shuffle array
+                .slice(0, 5); // Get first 5 items
+            
+            const relatedContainer = document.querySelector('.related-videos');
+            relatedContainer.innerHTML = ''; // Clear existing content
+            
+            randomVideos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'related-video-card';
+                card.onclick = () => window.location.href = `videoplayer1.html?id=${video.id}`;
+                
+                card.innerHTML = `
+                    <img src="${video.thumbnail}" alt="${video.title}" class="thumbnail">
+                    <div class="video-card-info">
+                        <h4 class="video-card-title">${video.title}</h4>
+                        <div class="video-stats">
+                            <span>${video.views} views</span>
+                            <span>${video.duration}</span>
+                        </div>
+                    </div>
+                `;
+                
+                relatedContainer.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error loading related videos:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', loadVideoById);
+    </script>
 </body>
-</html>
+</html>  
