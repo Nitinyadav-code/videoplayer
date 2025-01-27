@@ -38,7 +38,7 @@
       }
     },
     {
-      "route": "/Videos1",
+      "route": "/videocards",
       "serve": "/videocards.html",
       "headers": {
         "cache-control": "no-cache"
