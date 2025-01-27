@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*", "/sitemap.xml", "/*.ico"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*.json", "/sitemap.xml", "/*.ico"]
   },
   "routes": [
     {
@@ -39,7 +39,10 @@
     },
     {
       "route": "/Videos1",
-      "serve": "/videocards.html"
+      "serve": "/videocards.html",
+      "headers": {
+        "cache-control": "no-cache"
+      }
     },
     {
       "route": "/videoplayer1",
@@ -64,16 +67,23 @@
       }
     },
     {
-      "route":"/gallery",
-      "serve":"/gallery.html"
+      "route": "/gallery",
+      "serve": "/gallery.html"
     },
     {
-      "route":"/termsandconditions",
-      "serve":"/termsandconditions.html"
+      "route": "/termsandconditions",
+      "serve": "/termsandconditions.html"
     },
     {
-      "route":"/privacypolicy",
-      "serve":"/privacypolicy.html"
+      "route": "/privacypolicy",
+      "serve": "/privacypolicy.html"
+    },
+    {
+      "route": "/data/*",
+      "headers": {
+        "cache-control": "no-cache",
+        "content-type": "application/json"
+      }
     }
   ],
   "globalHeaders": {
@@ -81,10 +91,13 @@
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
-    "Referrer-Policy": "strict-origin-when-cross-origin"
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, OPTIONS"
   },
   "mimeTypes": {
     ".json": "application/json",
-    ".xml": "application/xml"
+    ".xml": "application/xml",
+    ".html": "text/html"
   }
 }
