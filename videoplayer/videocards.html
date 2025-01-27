@@ -319,7 +319,7 @@
                 const card = document.createElement('div');
                 card.className = 'video-card';
                 card.onclick = () => {
-                    window.location.href = `videoplayer1.html?id=${video.id}`;
+                    window.location.href = `videoplayer1.html?id=${video.id}&video=${encodeURIComponent(video.videoUrl)}`;
                 };
                 
                 card.innerHTML = `

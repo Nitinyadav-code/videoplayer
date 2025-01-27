@@ -351,7 +351,7 @@ video {
 </main>
 
 <main class="main-container">
-    <h2 class="video-title">Porn videos</h2>
+    <h2 class="video-title">Porn Short videos</h2>
     <div class="famous-videos" id="famousVideos" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
         <!-- Videos will be dynamically loaded here -->
     </div>
@@ -552,7 +552,6 @@ video {
                     const card = document.createElement('div');
                     card.className = 'related-video-card';
                     card.onclick = () => {
-                        // Use videoUrl directly from videos1.json
                         window.location.href = `videoplayer1.html?id=${video.id}&video=${encodeURIComponent(video.videoUrl)}`;
                     };
                     
@@ -589,8 +588,8 @@ video {
                     const card = document.createElement('div');
                     card.className = 'related-video-card';
                     card.onclick = () => {
-                        // Use src field from videos.json
-                        window.location.href = `videoplayer.html?id=${video.id}&video=${encodeURIComponent(video.src)}`;
+                        // Changed to use video-player.html instead of videoplayer.html
+                        window.location.href = `video-player.html?id=${video.id}&video=${encodeURIComponent(video.src)}`;
                     };
                     
                     card.innerHTML = `

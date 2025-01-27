@@ -144,7 +144,7 @@
         
         <div class="video-container">
             <video controls controlsList="nodownload" poster="">
-                <source src="https://www.dropbox.com/scl/fi/8hf21p9svduynxi8c3w3m/vid_720p-1.mp4?rlkey=b48nrt4h0i6xuv2zgplnugbdt&raw=1" type="video/mp4">
+                <source src="" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -280,7 +280,7 @@
                 return;
             }
 
-            // First update the video source if we have the URL parameter
+            // Update video source if we have the URL parameter
             if (videoUrl) {
                 const videoElement = document.querySelector('video');
                 const sourceElement = videoElement.querySelector('source');
@@ -384,4 +384,4 @@
     document.addEventListener('DOMContentLoaded', loadVideoById);
     </script>
 </body>
-</html>  
+</html>
