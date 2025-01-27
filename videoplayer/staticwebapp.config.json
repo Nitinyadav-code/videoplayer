@@ -1,9 +1,16 @@
 {
   "navigationFallback": {
     "rewrite": "index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*", "/sitemap.xml"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/data/*", "/sitemap.xml", "/*.ico"]
   },
   "routes": [
+    {
+      "route": "/",
+      "serve": "/index.html",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=3600"
+      }
+    },
     {
       "route": "/about",
       "serve": "/about.html"
@@ -24,6 +31,13 @@
       }
     },
     {
+      "route": "/video-player/*",
+      "serve": "/video-player.html",
+      "headers": {
+        "cache-control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
       "route": "/Videos1",
       "serve": "/videocards.html"
     },
@@ -32,6 +46,13 @@
       "serve": "/videoplayer1.html",
       "headers": {
         "cache-control": "no-cache"
+      }
+    },
+    {
+      "route": "/videoplayer1/*",
+      "serve": "/videoplayer1.html",
+      "headers": {
+        "cache-control": "no-cache, no-store, must-revalidate"
       }
     },
     {
@@ -49,15 +70,21 @@
     {
       "route":"/termsandconditions",
       "serve":"/termsandconditions.html"
-
     },
     {
       "route":"/privacypolicy",
       "serve":"/privacypolicy.html"
     }
-    
   ],
   "globalHeaders": {
-    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
+    "content-security-policy": "default-src 'self' https: data: blob: 'unsafe-eval' 'unsafe-inline'; object-src 'none'",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".xml": "application/xml"
   }
 }
