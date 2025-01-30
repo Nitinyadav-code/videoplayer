@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video List</title>
+    <style>
+        body{
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #161616;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            
+        }
+        .video-card {
+            cursor: pointer;
+            border: 1px solid #b9b8b8;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+        }
+        .video-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .video-info {
+            padding: 10px;
+            color: rgb(248, 250, 250);
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+        }
+        .pagination button.active {
+            background: #007bff;
+            color: white;
+        }
+        .pagination button:disabled {
+            background: #ddd;
+            cursor: not-allowed;
+        }
+        /* Add new header styles */
+        .header {
+            background: #1f1f1f;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            height: 40px;
+            border-radius: 50px;
+        }
+
+        .site-name {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #272727;
+            border-radius: 20px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+        }
+        .highlight {
+            background: rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .search-box {
+                width: 100%;
+                order: 3;
+            }
+            .nav-links {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-section">
+            <img src="android-chrome-512x512.png" alt="Logo" class="logo">
+            <span class="site-name">VideoStream</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="videoslist" class="highlight">Videos</a>
+            <a href="/videos">Trending</a>
+            <a href="/gallery">Images</a>
+        </nav>
+        <div class="search-box">
+            <input type="text" placeholder="Search videos...">
+        </div>
+    </header>
+
+    <div class="video-grid" id="videoGrid"></div>
+    <div class="pagination" id="pagination"></div>
+
+    <script>
+        const VIDEOS_PER_PAGE = 10;
+        let currentPage = 1;
+        let allVideos = [];
+
+        function displayVideos(page) {
+            const videoGrid = document.getElementById('videoGrid');
+            videoGrid.innerHTML = '';
+            
+            const startIndex = (page - 1) * VIDEOS_PER_PAGE;
+            const endIndex = startIndex + VIDEOS_PER_PAGE;
+            const videosToShow = allVideos.slice(startIndex, endIndex);
+
+            videosToShow.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <div class="video-info">
+                        <h3>${video.title}</h3>
+                        <p>${video.views} views • ${video.duration}</p>
+                    </div>
+                `;
+                card.onclick = () => {
+                    window.location.href = `test.html?id=${video.id}`;
+                };
+                videoGrid.appendChild(card);
+            });
+        }
+
+        function setupPagination(totalVideos) {
+            const totalPages = Math.ceil(totalVideos / VIDEOS_PER_PAGE);
+            const paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = '';
+
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.innerHTML = '←';
+            prevButton.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayVideos(currentPage);
+                    updatePaginationButtons();
+                }
+            };
+            paginationDiv.appendChild(prevButton);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.innerHTML = i;
+                button.onclick = () => {
+                    currentPage = i;
+                    displayVideos(currentPage);
+                    updatePaginationButtons();
+                };
+                paginationDiv.appendChild(button);
+            }
+
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.innerHTML = '→';
+            nextButton.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayVideos(currentPage);
+                    updatePaginationButtons();
+                }
+            };
+            paginationDiv.appendChild(nextButton);
+
+            function updatePaginationButtons() {
+                const buttons = paginationDiv.getElementsByTagName('button');
+                for (let button of buttons) {
+                    if (button.innerHTML !== '←' && button.innerHTML !== '→') {
+                        button.classList.toggle('active', parseInt(button.innerHTML) === currentPage);
+                    }
+                }
+                prevButton.disabled = currentPage === 1;
+                nextButton.disabled = currentPage === totalPages;
+            }
+
+            updatePaginationButtons();
+        }
+
+        fetch('videos.json')
+            .then(response => response.json())
+            .then(data => {
+                allVideos = data.videos;
+                displayVideos(currentPage);
+                setupPagination(allVideos.length);
+            });
+    </script>
+</body>
+</html>

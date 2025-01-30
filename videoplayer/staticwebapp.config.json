@@ -20,6 +20,10 @@
       "serve": "/videos.html"
     },
     {
+      "route": "/videoslist",
+      "serve": "/videoslist.html"
+    },
+    {
       "route": "/contact",
       "serve": "/contact.html"
     },

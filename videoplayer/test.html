@@ -1,100 +1,396 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Video Player</title>
     <style>
-        .video-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        video {
-            width: 100%;
-            height: auto;
-        }
-        .nav-menu {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 1rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .nav-menu ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
+        * {
             margin: 0;
             padding: 0;
-        }
-        
-        .nav-menu a {
-            color: var(--text-color);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        
-        .nav-menu a:hover {
-            background-color: var(--accent-color);
+            box-sizing: border-box;
         }
 
-        /* Header specific styles */
-        .header {
+        body {
+            background: #0f0f0f;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .video-container {
             width: 100%;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 1rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .header h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+        .player-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        /* Responsive header adjustments */
-        @media screen and (max-width: 768px) {
-            .header h1 {
+        .video-info {
+            padding: 20px;
+            background: #1f1f1f;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .video-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        #xplayer__video {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
+        /* Custom video controls */
+        video::-webkit-media-controls-enclosure {
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .video-container {
+                padding: 10px;
+            }
+            
+            .video-title {
                 font-size: 1.2rem;
+            }
+
+            .video-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
             }
         }
 
-        @media screen and (min-width: 769px) and (max-width: 1024px) {
-            .header h1 {
-                font-size: 1.5rem;
+        /* Quality selector */
+        .quality-selector {
+            position: absolute;
+            bottom: 60px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 5px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .quality-selector.active {
+            display: block;
+        }
+
+        .quality-btn {
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .quality-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Related Videos Styles */
+        .related-videos {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1f1f1f;
+            border-radius: 8px;
+        }
+
+        .related-videos h2 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .related-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .related-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .related-info {
+            padding: 8px 0;
+        }
+
+        .related-info h3 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .related-info p {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Add header styles (same as videoslist.html) */
+        .header {
+            background: #1f1f1f;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            height: 40px;
+            border-radius: 50px;
+        }
+
+        .site-name {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #272727;
+            border-radius: 20px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .search-box {
+                width: 100%;
+                order: 3;
+            }
+            .nav-links {
+                gap: 10px;
             }
         }
     </style>
-    <script>
-        // Prevent right-click on video
-        document.addEventListener('contextmenu', function(e) {
-            if (e.target.tagName === 'VIDEO') {
-                e.preventDefault();
-            }
-        });
-    </script>
 </head>
 <body>
     <header class="header">
-        <h1>Alllinkprovide-Porn video site- Watch hot porn videos.</h1>
-        <nav class="nav-menu">
-            <ul>
-                <li class="highlight"><a href="/">Home</a></li>
-                <li><a href="/videoplayer1">Special Videos</a></li>
-                <li><a href="/videos">Videos</a></li>
-                <li><a href="/about">About</a></li>
-                
-            </ul>
+        <div class="logo-section">
+            <img src="android-chrome-512x512.png" alt="Logo" class="logo">
+            
+            <span class="site-name">VideoStream</span>
+        </div>
+        <nav class="nav-links">
+            <a href="videoslist.html">Home</a>
+            <a href="#">Trending</a>
+            <a href="#">Categories</a>
         </nav>
+        <div class="search-box">
+            <input type="text" placeholder="Search videos...">
+        </div>
     </header>
+
     <div class="video-container">
-        <video controls controlsList="nodownload">
-            <source src="https://www.dropbox.com/scl/fi/8hf21p9svduynxi8c3w3m/vid_720p-1.mp4?rlkey=b48nrt4h0i6xuv2zgplnugbdt&raw=1" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="player-wrapper">
+            <video id="xplayer__video" preload="auto" crossorigin="anonymous" controls></video>
+        </div>
+        <div class="video-info">
+            <h1 class="video-title" id="videoTitle">Loading...</h1>
+            <div class="video-meta">
+                <span id="videoViews">0 views</span>
+                <span id="videoDuration">0:00</span>
+                <div class="video-actions">
+                    <button id="shareBtn" style="padding: 8px 16px; background: #272727; border: none; color: white; border-radius: 18px; cursor: pointer;">
+                        Share
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="related-videos">
+            <h2>Related Videos</h2>
+            <div class="related-grid" id="relatedGrid"></div>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('id');
+        
+        // Share functionality
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('Link copied to clipboard!'))
+                .catch(err => console.error('Failed to copy:', err));
+        });
+
+        function getRandomVideos(videos, currentId, count = 5) {
+            return videos
+                .filter(v => v.id !== currentId)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, count);
+        }
+
+        function displayRelatedVideos(videos, currentId) {
+            const relatedGrid = document.getElementById('relatedGrid');
+            const randomVideos = getRandomVideos(videos, currentId);
+            
+            relatedGrid.innerHTML = randomVideos.map(video => `
+                <div class="related-card" onclick="playVideo(${video.id})">
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <div class="related-info">
+                        <h3>${video.title}</h3>
+                        <p>${video.views.toLocaleString()} views • ${video.duration}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playVideo(id) {
+            // Update URL without refreshing
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('id', id);
+            window.history.pushState({}, '', newUrl);
+            
+            // Reload video player with new video
+            loadVideo(id);
+        }
+
+        function loadVideo(videoId) {
+            fetch('videos.json')
+                .then(response => response.json())
+                .then(data => {
+                    const video = data.videos.find(v => v.id === parseInt(videoId));
+                    if (video && Hls.isSupported()) {
+                        // Update video metadata
+                        document.getElementById('videoTitle').textContent = video.title;
+                        document.getElementById('videoViews').textContent = `${video.views.toLocaleString()} views`;
+                        document.getElementById('videoDuration').textContent = video.duration;
+                        
+                        // Initialize HLS
+                        const videoElement = document.getElementById('xplayer__video');
+                        const hls = new Hls();
+                        hls.loadSource(video.hlsUrl);
+                        hls.attachMedia(videoElement);
+                        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                            videoElement.play();
+                        });
+
+                        // Update related videos
+                        displayRelatedVideos(data.videos, parseInt(videoId));
+                    }
+                });
+        }
+
+        // Initial load
+       
+        loadVideo(parseInt(videoId));
+
+        fetch('videos.json')
+            .then(response => response.json())
+            .then(data => {
+                const video = data.videos.find(v => v.id === parseInt(videoId));
+                if (video && Hls.isSupported()) {
+                    // Update video metadata
+                    document.getElementById('videoTitle').textContent = video.title;
+                    document.getElementById('videoViews').textContent = `${video.views.toLocaleString()} views`;
+                    document.getElementById('videoDuration').textContent = video.duration;
+                    
+                    // Initialize HLS
+                    const videoElement = document.getElementById('xplayer__video');
+                    const hls = new Hls();
+                    hls.loadSource(video.hlsUrl);
+                    hls.attachMedia(videoElement);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                        videoElement.play();
+                    });
+
+                    // Error handling
+                    hls.on(Hls.Events.ERROR, function(event, data) {
+                        console.error('HLS Error:', data);
+                        if (data.fatal) {
+                            alert('Error loading video. Please try again later.');
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error loading video data');
+            });
+    </script>
 </body>
 </html>

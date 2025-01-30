@@ -322,6 +322,7 @@ video {
         <nav class="nav-menu">
             <ul>
                 <li class="highlight"><a href="/">Home</a></li>
+                <li><a href="videoslist">Best Videos</a></li>
                 <li ><a href="/videocards">Videos</a></li>
                 <li ><a href="/videos">Short Videos</a></li>
                 <li><a href="/gallery">Images</a></li>
@@ -340,6 +341,9 @@ video {
                 
             </div>
             </a>
+            <h2 class="video-title">Best porn Video</h2>
+
+            <div class="video-grid" id="videoGrid"></div>
         <h2 class="video-title">Trending Porn  video</h2>
         
         <div class="trending-videos" id="trendingVideos" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
@@ -369,6 +373,7 @@ video {
             <h3>Quick Links</h3>
             <ul>
                 <li><a href="/">Home</a></li>
+                <li><a href="videoslist">Best Videos</a></li>
                 <li><a href="/videocards">Videos</a></li>
                 <li><a href="/videos">Short Videos</a></li>
                 <li><a href="/gallery">Images</a></li>
@@ -609,7 +614,47 @@ video {
             }
         }
 
+        async function loadVideoCards() {
+            try {
+                const response = await fetch('videos.json');
+                const data = await response.json();
+                
+                const randomVideos = data.videos
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 7);
+                
+                const videoGrid = document.getElementById('videoGrid');
+                videoGrid.style.display = 'grid';
+                videoGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+                videoGrid.style.gap = '1rem';
+                
+                randomVideos.forEach(video => {
+                    const card = document.createElement('div');
+                    card.className = 'related-video-card';
+                    card.onclick = () => {
+                        window.location.href = `test.html?id=${video.id}`;
+                    };
+                    
+                    card.innerHTML = `
+                        <img src="${video.thumbnail}" alt="${video.title}" class="thumbnail">
+                        <div class="video-card-info">
+                            <h4 class="video-card-title">${video.title}</h4>
+                            <div class="video-stats">
+                                <span>${video.views.toLocaleString()} views</span>
+                                <span>${video.duration}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    videoGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading video cards:', error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            loadVideoCards();
             loadTrendingVideos();
             loadFamousVideos();
         });
